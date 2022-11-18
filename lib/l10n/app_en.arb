@@ -1,5 +1,9 @@
 {
   "search": "Search",
   "settings": "Settings",
-  "searchTitle": "Find tutors"
+  "searchTitle": "Find tutors",
+  "settingsTitle": "Settings",
+  "profile": "profile",
+  "listings": "offered subjects",
+  "account": "account"
 }
