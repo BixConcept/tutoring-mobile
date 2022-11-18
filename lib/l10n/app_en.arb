@@ -4,6 +4,12 @@
   "searchTitle": "Find tutors",
   "settingsTitle": "Settings",
   "profile": "profile",
-  "listings": "offered subjects",
-  "account": "account"
+  "listings": "listings",
+  "account": "account",
+  "profilePageTitle": "Profile",
+  "accountPageTitle": "Account",
+  "listingsPageTitle": "Listings",
+  "system": "system",
+  "systemPageTitle": "System",
+  "language": "Language"
 }

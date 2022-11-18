@@ -17,7 +17,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   final void Function(int) _onTap;
-  final int _currentIndex;
+  int _currentIndex;
   _BottomNavBarState(this._onTap, this._currentIndex);
 
   final pages = [MyHomePage(), MySettingsPage()];
@@ -27,7 +27,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return BottomNavigationBar(
       // ignore: prefer_const_literals_to_create_immutables
       currentIndex: _currentIndex,
-      onTap: _onTap,
+      onTap: (value) {
+        _onTap(value);
+        setState(
+          () {
+            _currentIndex = value;
+          },
+        );
+      },
       items: [
         BottomNavigationBarItem(
             icon: Icon(Icons.search),

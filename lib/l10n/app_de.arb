@@ -1,1 +1,15 @@
-{}
+{
+  "search": "Suchen",
+  "settings": "Einstellungen",
+  "searchTitle": "Nachhilfe finden",
+  "settingsTitle": "Einstellungen",
+  "profile": "Profil",
+  "listings": "Nachhilfe",
+  "account": "Account",
+  "profilePageTitle": "Profil",
+  "accountPageTitle": "Account",
+  "listingsPageTitle": "Nachhilfe",
+  "system": "System",
+  "systemPageTitle": "System",
+  "language": "Sprache"
+}
