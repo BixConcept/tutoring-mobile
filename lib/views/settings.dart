@@ -6,6 +6,7 @@ import 'package:tutoring_mobile/views/settings/profile.dart';
 import 'package:tutoring_mobile/views/settings/account.dart';
 import 'package:tutoring_mobile/views/settings/listings.dart';
 import 'package:tutoring_mobile/views/settings/system.dart';
+import 'package:tutoring_mobile/views/settings/notifications.dart';
 
 class MySettingsPage extends StatelessWidget {
   const MySettingsPage({super.key});
@@ -64,6 +65,18 @@ class MySettingsPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const MySettingsSystem(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: const Text("Benachrichtigungen"),
+            leading: const Icon(Icons.notifications),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MyNotificationsPage(),
                 ),
               );
             },
