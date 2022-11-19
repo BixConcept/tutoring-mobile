@@ -1,39 +1,111 @@
 import 'package:flutter/material.dart';
-import 'package:tutoring_mobile/components/bottom_nav_bar.dart';
-import 'package:tutoring_mobile/views/settings.dart';
-import 'package:tutoring_mobile/views/search.dart';
 
-// This isn't really a page but rather the thing all actual "pages" are rendered within
-// basically we're re-implementing navigation till we find a better alternative.
-//
-// The main drawback of this approac are that
-//   1. OS-level back button doesn't work when changing tabs
-//   2. this file/class is just named unintuitively
-//
-// Thank you for coming to my ted talk
-class MyHomePage extends StatefulWidget {
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  // FIXME: fetch
+  final subjects = const ["Englisch", "Deutsch", "Franzosisch", "Latein"];
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _tabIndex = 0;
-  final _pages = [const MySearchPage(), null, const MySettingsPage()];
+  final subjectEmojis = const ["🇬🇧", "🇱🇮", "🇦🇩", "📜"];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _tabIndex,
-        onTap: (index) {
-          setState(() {
-            _tabIndex = index;
-          });
-        },
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.green.shade400,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(AppLocalizations.of(context)!.searchTitle,
+                  style: Theme.of(context).textTheme.headline4),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    final subject = subjects.elementAt(index);
+                    final subjectEmoji = subjectEmojis.elementAt(index);
+
+                    return Row(
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white),
+                          onPressed: () {},
+                          child: SizedBox(
+                            width: 170,
+                            height: 100,
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 80,
+                                    child: Text(
+                                      subject,
+                                      maxLines: null,
+                                      softWrap: false,
+                                      overflow: TextOverflow.fade,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(subjectEmoji,
+                                      style: const TextStyle(fontSize: 30))
+                                ]),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        )
+                      ],
+                    );
+                  },
+                  itemCount: subjects.length,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: const StadiumBorder(),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 30)),
+                onPressed: () {
+                  // TODO
+                },
+                child: Row(children: [
+                  Text(
+                    AppLocalizations.of(context)!.otherSubjects,
+                  ),
+                  const SizedBox(width: 10),
+                  const Icon(Icons.arrow_forward),
+                ]),
+              )
+            ],
+          ),
+        ),
       ),
-      body: _pages.elementAt(_tabIndex),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tutoring_mobile/components/bottom_nav_bar.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutoring_mobile/views/settings/profile.dart';
@@ -70,7 +69,7 @@ class MySettingsPage extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text("Benachrichtigungen"),
+            title: Text(AppLocalizations.of(context)!.notifications),
             leading: const Icon(Icons.notifications),
             onTap: () {
               Navigator.push(

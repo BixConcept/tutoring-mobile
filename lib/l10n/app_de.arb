@@ -13,5 +13,6 @@
   "systemPageTitle": "System",
   "language": "Sprache",
   "otherSubjects": "Mehr Fächer",
-  "sickNote": "Krankschreibung"
+  "sickNote": "Krankschreibung",
+  "notifications": "Benachrichtigungen"
 }

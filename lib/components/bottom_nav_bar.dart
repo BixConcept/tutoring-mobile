@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tutoring_mobile/views/home.dart';
 import 'package:tutoring_mobile/views/search.dart';
 
 import '../views/settings.dart';
@@ -31,7 +30,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
       },
       showSelectedLabels: false,
       showUnselectedLabels: false,
+      selectedItemColor: Colors.green.shade400,
       items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: AppLocalizations.of(context)!.search),

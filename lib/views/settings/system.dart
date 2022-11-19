@@ -13,7 +13,11 @@ class MySettingsSystem extends StatefulWidget {
 }
 
 class _MySettingsSystemState extends State<MySettingsSystem> {
-  final languages = {'de': 'Deutsch', 'en': 'English'};
+  final languages = {
+    'de': 'Deutsch 🇱🇮',
+    'en': 'English 🇺🇸',
+    'ua': "українець 🇺🇦"
+  };
   String languageValue = 'de';
 
   late bool dark;
@@ -55,27 +59,34 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
           ListTile(
             title: Text(AppLocalizations.of(context)!.language),
             leading: const Icon(Icons.translate),
-            trailing: DropdownButton(
-              items: languages.entries
-                  .map(
-                    (entry) => DropdownMenuItem(
-                      value: entry.key,
-                      child: Text(entry.value),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(
-                  () {
-                    languageValue = value!;
-                    locale.setLocale(languageValue);
-                  },
-                );
-              },
-              value: languageValue,
+            trailing: SizedBox(
+              width: 170,
+              child: DropdownButton(
+                isExpanded: true,
+                items: languages.entries
+                    .map(
+                      (entry) => DropdownMenuItem(
+                        value: entry.key,
+                        child: Text(entry.value),
+                        enabled: entry.key !=
+                            "ua", // no one speaks ukrainian so we don't have translations yet i'd still like to highlight it
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      languageValue = value!;
+                      locale.setLocale(languageValue);
+                    },
+                  );
+                },
+                value: languageValue,
+              ),
             ),
           ),
           ListTile(
+            leading: Icon(Icons.dark_mode_outlined),
             title: const Text("Theme"),
             trailing: IconButton(
               icon: dark != true

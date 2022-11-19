@@ -3,8 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:tutoring_mobile/themeManager.dart';
-
 import 'package:tutoring_mobile/views/home.dart';
+
+import 'package:tutoring_mobile/views/search.dart';
+import 'package:tutoring_mobile/views/settings.dart';
+
+import 'components/bottom_nav_bar.dart';
 
 void main() {
   runApp(const App());
@@ -38,6 +42,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.system;
+  int _tabIndex = 0;
+  final _pages = [
+    const MyHomePage(),
+    const MySearchPage(),
+    null,
+    const MySettingsPage()
+  ];
 
   void changeTheme(ThemeMode themeMode) {
     setState(() {
@@ -59,7 +70,17 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeNotifier().lightTheme,
         darkTheme: ThemeNotifier().darkTheme,
         themeMode: _themeMode,
-        home: const MyHomePage(),
+        home: Scaffold(
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: _tabIndex,
+            onTap: (index) {
+              setState(() {
+                _tabIndex = index;
+              });
+            },
+          ),
+          body: _pages.elementAt(_tabIndex),
+        ),
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

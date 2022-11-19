@@ -13,5 +13,6 @@
   "systemPageTitle": "System",
   "language": "Language",
   "otherSubjects": "Other subjects",
-  "sickNote": "Sick note"
+  "sickNote": "Sick note",
+  "notifications": "Notifications"
 }
