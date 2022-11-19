@@ -11,5 +11,7 @@
   "listingsPageTitle": "Nachhilfe",
   "system": "System",
   "systemPageTitle": "System",
-  "language": "Sprache"
+  "language": "Sprache",
+  "otherSubjects": "Mehr Fächer",
+  "sickNote": "Krankschreibung"
 }

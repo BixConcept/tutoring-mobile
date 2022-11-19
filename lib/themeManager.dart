@@ -3,15 +3,14 @@ import 'package:tutoring_mobile/storageManager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
-    primarySwatch: Colors.grey,
     primaryColor: Colors.black,
     brightness: Brightness.dark,
-    backgroundColor: const Color(0xFF212121),
+    scaffoldBackgroundColor: Color.fromARGB(255, 15, 15, 15),
     dividerColor: Colors.black12,
   );
 
   final lightTheme = ThemeData(
-    primarySwatch: Colors.grey,
+    // primarySwatch: Colors.grey,
     primaryColor: Colors.white,
     brightness: Brightness.light,
     backgroundColor: const Color(0xFFE5E5E5),

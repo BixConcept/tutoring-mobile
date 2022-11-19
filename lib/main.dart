@@ -56,8 +56,8 @@ class _MyAppState extends State<MyApp> {
       builder: (context, theme, _) => MaterialApp(
         locale: Locale(locale.locale),
         title: 'GymHaan App',
-        theme: ThemeData(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeNotifier().lightTheme,
+        darkTheme: ThemeNotifier().darkTheme,
         themeMode: _themeMode,
         home: const MyHomePage(),
         localizationsDelegates: const [

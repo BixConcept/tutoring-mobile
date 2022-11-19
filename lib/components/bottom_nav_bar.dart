@@ -5,39 +5,40 @@ import 'package:tutoring_mobile/views/home.dart';
 import '../views/settings.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar(
-      {super.key, required this.onTap, required this.currentIndex});
-
   final void Function(int) onTap;
-  final int currentIndex;
+  int currentIndex;
+  BottomNavBar({required this.onTap, required this.currentIndex, super.key});
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState(onTap, currentIndex);
+  State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  final void Function(int) _onTap;
-  int _currentIndex;
-  _BottomNavBarState(this._onTap, this._currentIndex);
+  _BottomNavBarState();
 
-  final pages = [MyHomePage(), MySettingsPage()];
+  final pages = [const MyHomePage(), null, const MySettingsPage()];
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _currentIndex,
+      currentIndex: widget.currentIndex,
       onTap: (value) {
-        _onTap(value);
+        widget.onTap(value);
         setState(
           () {
-            _currentIndex = value;
+            widget.currentIndex = value;
           },
         );
       },
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: AppLocalizations.of(context)!.search),
+          icon: Icon(Icons.search),
+          label: AppLocalizations.of(context)!.search),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.sick_outlined),
+            label: AppLocalizations.of(context)!.sickNote),
         BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: AppLocalizations.of(context)!.settings),

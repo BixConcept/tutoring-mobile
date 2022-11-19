@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tutoring_mobile/components/bottom_nav_bar.dart';
 import 'package:tutoring_mobile/views/settings.dart';
+import 'package:tutoring_mobile/views/search.dart';
 
-import 'search.dart';
-
+// This isn't really a page but rather the thing all actual "pages" are rendered within
+// basically we're re-implementing navigation till we find a better alternative.
+//
+// The main drawback of this approac are that
+//   1. OS-level back button doesn't work when changing tabs
+//   2. this file/class is just named unintuitively
+//
+// Thank you for coming to my ted talk
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 

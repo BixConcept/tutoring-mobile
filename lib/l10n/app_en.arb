@@ -11,5 +11,7 @@
   "listingsPageTitle": "Listings",
   "system": "system",
   "systemPageTitle": "System",
-  "language": "Language"
+  "language": "Language",
+  "otherSubjects": "Other subjects",
+  "sickNote": "Sick note"
 }

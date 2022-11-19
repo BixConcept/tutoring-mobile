@@ -31,7 +31,10 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
     } else if (MyApp.of(context).getTheme() == ThemeMode.light) {
       dark = false;
     } else if (MyApp.of(context).getTheme() == ThemeMode.system) {
-      dark = SchedulerBinding.instance.platformDispatcher.platformBrightness==Brightness.dark?true:false;
+      dark = SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark
+          ? true
+          : false;
     }
   }
 
@@ -43,7 +46,9 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
     return Scaffold(
       appBar: AppBar(
           elevation: 0,
-          title: Text(AppLocalizations.of(context)!.systemPageTitle),
+          title: Text(AppLocalizations.of(context)!.systemPageTitle,
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge!.color)),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor),
       body: ListView(
         children: [
