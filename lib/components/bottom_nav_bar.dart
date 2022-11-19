@@ -25,7 +25,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      // ignore: prefer_const_literals_to_create_immutables
       currentIndex: _currentIndex,
       onTap: (value) {
         _onTap(value);

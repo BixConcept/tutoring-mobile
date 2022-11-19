@@ -65,10 +65,10 @@ class MySearchPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(subjectEmoji,
-                                    style: TextStyle(fontSize: 30))
+                                    style: const TextStyle(fontSize: 30))
                               ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         )
                       ],

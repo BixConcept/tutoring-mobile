@@ -13,7 +13,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _tabIndex = 0;
-  final _pages = [MySearchPage(), MySettingsPage()];
+  final _pages = [const MySearchPage(), const MySettingsPage()];
 
   @override
   Widget build(BuildContext context) {

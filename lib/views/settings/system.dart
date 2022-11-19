@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -15,18 +16,28 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
   final languages = {'de': 'Deutsch', 'en': 'English'};
   String languageValue = 'de';
 
+  late bool dark;
+
   @override
   void initState() {
-    // TODO: implement initState
-
+    super.initState();
     Future.delayed(Duration.zero, () {
       languageValue = Localizations.localeOf(context).languageCode;
     });
+
+    // GET SE THEME
+    if (MyApp.of(context).getTheme() == ThemeMode.dark) {
+      dark = true;
+    } else if (MyApp.of(context).getTheme() == ThemeMode.light) {
+      dark = false;
+    } else if (MyApp.of(context).getTheme() == ThemeMode.system) {
+      dark = SchedulerBinding.instance.platformDispatcher.platformBrightness==Brightness.dark?true:false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    LocaleProvider _locale = Provider.of<LocaleProvider>(context);
+    LocaleProvider locale = Provider.of<LocaleProvider>(context);
     setState(() {});
 
     return Scaffold(
@@ -52,13 +63,33 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
                 setState(
                   () {
                     languageValue = value!;
-                    _locale.setLocale(languageValue);
+                    locale.setLocale(languageValue);
                   },
                 );
               },
               value: languageValue,
             ),
-          )
+          ),
+          ListTile(
+            title: const Text("Theme"),
+            trailing: IconButton(
+              icon: dark != true
+                  ? const Icon(Icons.dark_mode)
+                  : const Icon(Icons.light_mode),
+              onPressed: () {
+                setState(
+                  () {
+                    if (dark) {
+                      MyApp.of(context).changeTheme(ThemeMode.light);
+                    } else {
+                      MyApp.of(context).changeTheme(ThemeMode.dark);
+                    }
+                    dark = !dark;
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
