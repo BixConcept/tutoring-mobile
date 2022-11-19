@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutoring_mobile/views/home.dart';
+import 'package:tutoring_mobile/views/search.dart';
 
 import '../views/settings.dart';
 
@@ -15,8 +16,6 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   _BottomNavBarState();
-
-  final pages = [const MyHomePage(), null, const MySettingsPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +33,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       showUnselectedLabels: false,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: AppLocalizations.of(context)!.search),
+            icon: Icon(Icons.search),
+            label: AppLocalizations.of(context)!.search),
         BottomNavigationBarItem(
             icon: Icon(Icons.sick_outlined),
             label: AppLocalizations.of(context)!.sickNote),
