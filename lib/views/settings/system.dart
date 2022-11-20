@@ -16,7 +16,7 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
   final languages = {
     'de': 'Deutsch 🇱🇮',
     'en': 'English 🇺🇸',
-    'ua': "українець 🇺🇦" // Wer kann das übersetzen? — just DeepL it for now?
+    'uk': "українець 🇺🇦" // Wer kann das übersetzen? — just DeepL it for now?
   };
   String languageValue = 'de';
 
