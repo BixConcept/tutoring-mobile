@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoring_mobile/themeManager.dart';
 import 'package:tutoring_mobile/views/home.dart';
 
@@ -66,7 +67,7 @@ class _MyAppState extends State<MyApp> {
     var locale = Provider.of<LocaleProvider>(context);
     return Consumer<ThemeNotifier>(
       builder: (context, theme, _) => MaterialApp(
-        locale: Locale(locale.locale),
+        locale: locale.locale,
         title: 'GymHaan App',
         theme: ThemeNotifier().lightTheme,
         darkTheme: ThemeNotifier().darkTheme,
@@ -89,9 +90,9 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale('en', ''),
-          Locale('de', ''),
-          Locale('uk', '')
+          Locale('en', 'US'),
+          Locale('de', 'DE'),
+          Locale('uk', 'UA')
         ],
       ),
     );
@@ -99,13 +100,32 @@ class _MyAppState extends State<MyApp> {
 }
 
 class LocaleProvider extends ChangeNotifier {
-  String _locale = 'de';
+  Locale _locale = Locale('de');
 
-  String get locale => _locale;
+  Locale get locale => _locale;
 
-  LocaleProvider();
+  LocaleProvider() {
+    _fetchLocale();
+  }
 
-  void setLocale(String locale) {
+  Future<void> _fetchLocale() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    _locale = Locale(prefs.getString('language_code') ?? 'de',
+        prefs.getString('country_code') ?? '');
+    notifyListeners();
+  }
+
+  Future<void> setLocale(Locale locale) async {
+    // update in shared_preferences
+    var prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('language_code', locale.languageCode);
+    if (locale.countryCode != null) {
+      prefs.setString('language_code', locale.countryCode!);
+    }
+
+    // update in state
     _locale = locale;
     notifyListeners();
   }

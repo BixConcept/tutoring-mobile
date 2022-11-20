@@ -26,7 +26,9 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      languageValue = Localizations.localeOf(context).languageCode;
+      setState(() {
+        languageValue = Localizations.localeOf(context).languageCode;
+      });
     });
 
     // GET SE THEME
@@ -75,7 +77,7 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
                   setState(
                     () {
                       languageValue = value!;
-                      locale.setLocale(languageValue);
+                      locale.setLocale(Locale(languageValue));
                     },
                   );
                 },
