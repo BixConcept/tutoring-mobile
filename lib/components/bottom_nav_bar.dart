@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tutoring_mobile/views/search.dart';
 
 import '../views/settings.dart';
+import '../main.dart';
 
 class BottomNavBar extends StatefulWidget {
   final void Function(int) onTap;
@@ -30,6 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       },
       showSelectedLabels: false,
       showUnselectedLabels: false,
+      unselectedIconTheme: Theme.of(context).primaryIconTheme,
       selectedItemColor: Colors.green.shade400,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
