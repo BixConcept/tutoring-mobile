@@ -7,6 +7,7 @@ import 'package:tutoring_mobile/views/home.dart';
 
 import 'package:tutoring_mobile/views/search.dart';
 import 'package:tutoring_mobile/views/settings.dart';
+import 'package:tutoring_mobile/views/sickNote.dart';
 
 import 'components/bottom_nav_bar.dart';
 
@@ -46,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   final _pages = [
     const MyHomePage(),
     const MySearchPage(),
-    null,
+    const MySickNotePage(),
     const MySettingsPage()
   ];
 
