@@ -14,5 +14,6 @@
   "language": "Sprache",
   "otherSubjects": "Mehr Fächer",
   "sickNote": "Krankschreibung",
-  "notifications": "Benachrichtigungen"
+  "notifications": "Benachrichtigungen",
+  "noNews": "Keine Neuigkeiten"
 }
