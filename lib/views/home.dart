@@ -1,14 +1,43 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tutoring_mobile/api.dart';
+import 'package:tutoring_mobile/models/subject.dart';
+import 'package:http/http.dart' as http;
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-  // FIXME: fetch
-  final subjects = const ["Mathe", "Englisch", "Franzosisch", "Latein"];
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-  final subjectEmojis = const ["🇬", "🇱🇮", "🇦🇩", "📜"];
+class _MyHomePageState extends State<MyHomePage> {
+  // FIXME: fetch
+  final subjectEmojis = {"Biologie": ""};
+
+  late Future<List<Subject>> _subjects;
+
+  Future<List<Subject>> _fetchSubjects() async {
+    final response = await http.get(Uri.parse("${API_URL}/subjects"));
+    List<Subject> subjects = (jsonDecode(response.body)["content"] as List)
+        .map(((s) => Subject.fromJson(s)))
+        .toList();
+
+    debugPrint(subjects.toString());
+
+    return subjects;
+  }
+
+  @override
+  void initState() {
+    _subjects = _fetchSubjects();
+    setState(() {});
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,58 +59,72 @@ class MyHomePage extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline4),
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        final subject = subjects.elementAt(index);
-                        final subjectEmoji = subjectEmojis.elementAt(index);
+                      height: 100,
+                      child: FutureBuilder(
+                        future: _fetchSubjects(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                final subject =
+                                    (snapshot.data.elementAt(index) as Subject);
+                                final subjectEmoji = subjectEmojis[subject.id] ?? '';
 
-                        return Row(
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white),
-                              onPressed: () {},
-                              child: SizedBox(
-                                width: 170,
-                                height: 100,
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: 80,
-                                        child: Text(
-                                          subject,
-                                          maxLines: null,
-                                          softWrap: false,
-                                          overflow: TextOverflow.fade,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium!
-                                              .copyWith(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                        ),
+                                return Row(
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white),
+                                      onPressed: () {},
+                                      child: SizedBox(
+                                        width: 170,
+                                        height: 100,
+                                        child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: 80,
+                                                child: Text(
+                                                  subject.name,
+                                                  maxLines: null,
+                                                  softWrap: false,
+                                                  overflow: TextOverflow.fade,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium!
+                                                      .copyWith(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                ),
+                                              ),
+                                              Text(subjectEmoji,
+                                                  style: const TextStyle(
+                                                      fontSize: 30))
+                                            ]),
                                       ),
-                                      Text(subjectEmoji,
-                                          style: const TextStyle(fontSize: 30))
-                                    ]),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            )
-                          ],
-                        );
-                      },
-                      itemCount: subjects.length,
-                    ),
-                  ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    )
+                                  ],
+                                );
+                              },
+                              itemCount: snapshot.data.length,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("error: ${snapshot.error}");
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      )),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
