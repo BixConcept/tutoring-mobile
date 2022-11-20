@@ -16,7 +16,7 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
   final languages = {
     'de': 'Deutsch 🇱🇮',
     'en': 'English 🇺🇸',
-    'ua': "українець 🇺🇦" // Wer kann das übersetzen?
+    'ua': "українець 🇺🇦" // Wer kann das übersetzen? — just DeepL it for now?
   };
   String languageValue = 'de';
 
@@ -68,8 +68,6 @@ class _MySettingsSystemState extends State<MySettingsSystem> {
                       (entry) => DropdownMenuItem(
                         value: entry.key,
                         child: Text(entry.value),
-                        enabled: entry.key !=
-                            "ua", // no one speaks ukrainian so we don't have translations yet i'd still like to highlight it
                       ),
                     )
                     .toList(),

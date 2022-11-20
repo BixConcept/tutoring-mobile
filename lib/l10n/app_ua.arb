@@ -1,0 +1,19 @@
+{
+  "search": "Пошук",
+  "settings": "Налаштування",
+  "searchTitle": "Знайти репетитора",
+  "settingsTitle": "Налаштування",
+  "profile": "Профіль",
+  "listings": "репетиторство",
+  "account": "Користувач",
+  "profilePageTitle": "Профіль",
+  "accountPageTitle": "Користувач",
+  "listingsPageTitle": "репетиторство",
+  "system": "репетиторство",
+  "systemPageTitle": "репетиторство",
+  "language": "мова",
+  "otherSubjects": "Більше предметів",
+  "sickNote": "Лікарняний лист",
+  "notifications": "Новини",
+  "noNews": "Немає новин."
+}
