@@ -9,13 +9,13 @@ class MySickNotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Krankmeldung",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             SizedBox(height: 20),
             RichText(
@@ -35,7 +35,11 @@ class MySickNotePage extends StatelessWidget {
                     );
                   }),
               ),
-              TextSpan(text: " Krankmeldungen durchführen"),
+              TextSpan(
+                text: " Krankmeldungen durchführen",
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText2!.color),
+              ),
             ]))
           ],
         ),

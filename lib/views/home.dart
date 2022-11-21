@@ -7,6 +7,7 @@ import 'package:skeletons/skeletons.dart';
 import 'package:tutoring_mobile/api.dart';
 import 'package:tutoring_mobile/models/subject.dart';
 import 'package:http/http.dart' as http;
+import 'package:tutoring_mobile/views/tutoring.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -41,82 +42,98 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Future<void> _refresh() async {
+    setState(() {
+      _subjects = _fetchSubjects();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListView(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.green.shade400,
-            ),
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(AppLocalizations.of(context)!.searchTitle,
-                      style: Theme.of(context).textTheme.headline4),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                      height: 100,
-                      child: FutureBuilder(
-                        future: _fetchSubjects(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.hasData) {
-                            return SubjectList(
-                              subjects: snapshot.data,
-                              loading: false,
-                            );
-                          } else if (snapshot.hasError) {
-                            return Text("error: ${snapshot.error}");
-                          } else {
-                            return SubjectList(subjects: [], loading: true);
-                          }
-                        },
-                      )),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        shape: const StadiumBorder(),
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(fontWeight: FontWeight.bold),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 30)),
-                    onPressed: () {
-                      // TODO
-                    },
-                    child: Row(children: [
-                      Text(
-                        AppLocalizations.of(context)!.otherSubjects,
-                      ),
-                      const SizedBox(width: 10),
-                      const Icon(Icons.arrow_forward),
-                    ]),
-                  )
-                ],
+      child: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.green.shade400,
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(AppLocalizations.of(context)!.searchTitle,
+                        style: Theme.of(context).textTheme.headline4),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                        height: 100,
+                        child: FutureBuilder(
+                          future: _subjects,
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState !=
+                                ConnectionState.done) {
+                              return SubjectList(subjects: [], loading: true);
+                            }
+                            if (snapshot.hasData) {
+                              return SubjectList(
+                                subjects: snapshot.data,
+                                loading: false,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("error: ${snapshot.error}");
+                            } else {
+                              return SubjectList(subjects: [], loading: true);
+                            }
+                          },
+                        )),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          shape: const StadiumBorder(),
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 30)),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MyTutoringPage(subject: null),
+                        ));
+                      },
+                      child: Row(children: [
+                        Text(
+                          AppLocalizations.of(context)!.otherSubjects,
+                        ),
+                        const SizedBox(width: 10),
+                        const Icon(Icons.arrow_forward),
+                      ]),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("News", style: Theme.of(context).textTheme.headlineMedium),
-                Text(AppLocalizations.of(context)!.noNews)
-              ],
-            ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("News",
+                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(AppLocalizations.of(context)!.noNews)
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -162,19 +179,29 @@ class SubjectList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: 5,
         itemBuilder: ((context, index) {
-          return SkeletonItem(
-            child: Row(children: [
-              SizedBox(
-                width: 200,
-                height: 100,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+          return SkeletonTheme(
+            darkShimmerGradient: LinearGradient(
+              colors: [Colors.white, Color(0xFFC8D5DA), Colors.white],
+              stops: [
+                0.1,
+                0.5,
+                0.9,
+              ],
+            ),
+            child: SkeletonItem(
+              child: Row(children: [
+                SizedBox(
+                  width: 200,
+                  height: 100,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                  ),
                 ),
-              ),
-              SizedBox(width: 10)
-            ]),
+                SizedBox(width: 10)
+              ]),
+            ),
           );
         }),
       );
@@ -199,7 +226,13 @@ class SubjectList extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: ((context) => MyTutoringPage(
+                          subject: subject,
+                        )),
+                  ));
+                },
                 child: SizedBox(
                   width: 170,
                   height: 100,

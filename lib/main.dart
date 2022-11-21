@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoring_mobile/themeManager.dart';
 import 'package:tutoring_mobile/views/home.dart';
 
-import 'package:tutoring_mobile/views/search.dart';
+import 'package:tutoring_mobile/views/tutoring.dart';
 import 'package:tutoring_mobile/views/settings.dart';
 import 'package:tutoring_mobile/views/sickNote.dart';
 
@@ -74,17 +73,31 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeNotifier().lightTheme,
         darkTheme: ThemeNotifier().darkTheme,
         themeMode: _themeMode,
-        home: Scaffold(
-          bottomNavigationBar: BottomNavBar(
-            currentIndex: _tabIndex,
-            onTap: (index) {
-              setState(() {
-                _tabIndex = index;
-              });
-            },
-          ),
-          body: _pages.elementAt(_tabIndex),
-        ),
+        home: Builder(builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+                title: Text(
+                  "GYMHAAN",
+                  style: TextStyle(
+                      letterSpacing: 5,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 23),
+                ),
+                centerTitle: true,
+                elevation: 0,
+                foregroundColor: Theme.of(context).textTheme.bodyText2!.color,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+            bottomNavigationBar: BottomNavBar(
+              currentIndex: _tabIndex,
+              onTap: (index) {
+                setState(() {
+                  _tabIndex = index;
+                });
+              },
+            ),
+            body: _pages.elementAt(_tabIndex),
+          );
+        }),
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
