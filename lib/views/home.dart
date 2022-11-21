@@ -15,9 +15,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // FIXME: fetch
-  final subjectEmojis = {"Biologie": ""};
-
   late Future<List<Subject>> _subjects;
 
   Future<List<Subject>> _fetchSubjects() async {
@@ -25,8 +22,6 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Subject> subjects = (jsonDecode(response.body)["content"] as List)
         .map(((s) => Subject.fromJson(s)))
         .toList();
-
-    debugPrint(subjects.toString());
 
     return subjects;
   }
@@ -65,58 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
                           if (snapshot.hasData) {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                final subject =
-                                    (snapshot.data.elementAt(index) as Subject);
-                                final subjectEmoji = subjectEmojis[subject.id] ?? '';
-
-                                return Row(
-                                  children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white),
-                                      onPressed: () {},
-                                      child: SizedBox(
-                                        width: 170,
-                                        height: 100,
-                                        child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(
-                                                width: 80,
-                                                child: Text(
-                                                  subject.name,
-                                                  maxLines: null,
-                                                  softWrap: false,
-                                                  overflow: TextOverflow.fade,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium!
-                                                      .copyWith(
-                                                          color: Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                ),
-                                              ),
-                                              Text(subjectEmoji,
-                                                  style: const TextStyle(
-                                                      fontSize: 30))
-                                            ]),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    )
-                                  ],
-                                );
-                              },
-                              itemCount: snapshot.data.length,
+                            return SubjectList(
+                              subjects: snapshot.data,
                             );
                           } else if (snapshot.hasError) {
                             return Text("error: ${snapshot.error}");
@@ -165,6 +110,89 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
+    );
+  }
+}
+
+class SubjectList extends StatelessWidget {
+  SubjectList({
+    Key? key,
+    required this.subjects,
+  }) : super(key: key);
+
+  final Map<String, String> subjectEmojis = {
+    "1": "🌳", // biology
+    "2": "🧪", // chemistry
+    "3": "🖋️", // german
+    "4": "🇺🇸", // english
+    "5": "🗺️", // geography
+    "6": "✝️", // protestant religious studies
+    "7": "🇫🇷", // french
+    "8": "📜", // history
+    "9": "👩‍💻", // computer science
+    "10": "✝", // catholic religious studies
+    "11": "🎨", // art
+    "12": "🏛️", // latin
+    "13": "🧮", // math
+    "14": "🎼", // music
+    "15": "🏫", // pedagogy
+    "16": "🗿", // philosophy
+    "17": "🌈", // physics
+    "18": "🌐", // politics
+    "19": "🇪🇸" // spanish
+  };
+  final List<Subject> subjects;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        final Subject subject = subjects.elementAt(index);
+        final String subjectEmoji = subjectEmojis[subject.id.toString()] ?? '';
+
+        return Row(
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+              onPressed: () {},
+              child: SizedBox(
+                width: 170,
+                height: 100,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          subject.name,
+                          maxLines: null,
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Text(subjectEmoji,
+                              style: const TextStyle(fontSize: 30)))
+                    ]),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        );
+      },
+      itemCount: subjects.length,
     );
   }
 }
