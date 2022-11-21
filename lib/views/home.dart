@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:tutoring_mobile/api.dart';
 import 'package:tutoring_mobile/models/subject.dart';
 import 'package:http/http.dart' as http;
@@ -68,14 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           if (snapshot.hasData) {
                             return SubjectList(
                               subjects: snapshot.data,
+                              loading: false,
                             );
                           } else if (snapshot.hasError) {
                             return Text("error: ${snapshot.error}");
                           } else {
-                            return Center(
-                                child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ));
+                            return SubjectList(subjects: [], loading: true);
                           }
                         },
                       )),
@@ -127,6 +126,7 @@ class SubjectList extends StatelessWidget {
   SubjectList({
     Key? key,
     required this.subjects,
+    required this.loading,
   }) : super(key: key);
 
   final Map<String, String> subjectEmojis = {
@@ -150,58 +150,93 @@ class SubjectList extends StatelessWidget {
     "18": "🌐", // politics
     "19": "🇪🇸" // spanish
   };
-  List<Subject> subjects;
+  final List<Subject> subjects;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        final Subject subject = subjects.elementAt(index);
-        final String subjectEmoji = subjectEmojis[subject.id.toString()] ?? '';
-
-        return Row(
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-              onPressed: () {},
-              child: SizedBox(
-                width: 170,
+    if (loading) {
+      return ListView.builder(
+        // shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: 5,
+        itemBuilder: ((context, index) {
+          return SkeletonItem(
+            child: Row(children: [
+              SizedBox(
+                width: 200,
                 height: 100,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          subject.name,
-                          maxLines: null,
-                          softWrap: false,
-                          overflow: TextOverflow.fade,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: Text(subjectEmoji,
-                              style: const TextStyle(fontSize: 30)))
-                    ]),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            )
-          ],
-        );
-      },
-      itemCount: subjects.length,
-    );
+              SizedBox(width: 10)
+            ]),
+          );
+        }),
+      );
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          final Subject subject = subjects.elementAt(index);
+          final String subjectEmoji =
+              subjectEmojis[subject.id.toString()] ?? '';
+
+          return Row(
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: SizedBox(
+                  width: 170,
+                  height: 100,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            subject.name,
+                            maxLines: null,
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: Text(subjectEmoji,
+                                style: const TextStyle(fontSize: 30)))
+                      ]),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              )
+            ],
+          );
+        },
+        itemCount: subjects.length,
+      );
+    }
   }
 }

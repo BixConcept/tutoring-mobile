@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoring_mobile/themeManager.dart';
@@ -13,6 +16,12 @@ import 'package:tutoring_mobile/views/sickNote.dart';
 import 'components/bottom_nav_bar.dart';
 
 void main() {
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString("google_fonts/raleway_OFL.txt");
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const App());
 }
 
@@ -47,7 +56,6 @@ class _MyAppState extends State<MyApp> {
   int _tabIndex = 0;
   final _pages = [
     const MyHomePage(),
-    const MySearchPage(),
     const MySickNotePage(),
     const MySettingsPage()
   ];
@@ -69,8 +77,8 @@ class _MyAppState extends State<MyApp> {
       builder: (context, theme, _) => MaterialApp(
         locale: locale.locale,
         title: 'GymHaan App',
-        theme: ThemeNotifier().lightTheme,
-        darkTheme: ThemeNotifier().darkTheme,
+        theme: ThemeNotifier().buildLightTheme(),
+        darkTheme: ThemeNotifier().buildLightTheme(),
         themeMode: _themeMode,
         home: Scaffold(
           bottomNavigationBar: BottomNavBar(

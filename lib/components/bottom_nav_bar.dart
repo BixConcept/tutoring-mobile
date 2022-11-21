@@ -36,9 +36,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: AppLocalizations.of(context)!.search),
-        BottomNavigationBarItem(
             icon: Icon(Icons.sick_outlined),
             label: AppLocalizations.of(context)!.sickNote),
         BottomNavigationBarItem(
