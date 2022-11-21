@@ -20,7 +20,10 @@ class MySickNotePage extends StatelessWidget {
             SizedBox(height: 20),
             RichText(
                 text: TextSpan(children: [
-              TextSpan(text: "TODO — bitte auf "),
+              TextSpan(
+                  text: "TODO — bitte auf ",
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2!.color)),
               TextSpan(
                 text: "krankmeldung.gymhaan.de",
                 style: TextStyle(color: Colors.blue),

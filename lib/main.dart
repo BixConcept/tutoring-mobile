@@ -16,12 +16,6 @@ import 'package:tutoring_mobile/views/sickNote.dart';
 import 'components/bottom_nav_bar.dart';
 
 void main() {
-  LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString("google_fonts/raleway_OFL.txt");
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });
-
-  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const App());
 }
 
@@ -77,8 +71,8 @@ class _MyAppState extends State<MyApp> {
       builder: (context, theme, _) => MaterialApp(
         locale: locale.locale,
         title: 'GymHaan App',
-        theme: ThemeNotifier().buildLightTheme(),
-        darkTheme: ThemeNotifier().buildLightTheme(),
+        theme: ThemeNotifier().lightTheme,
+        darkTheme: ThemeNotifier().darkTheme,
         themeMode: _themeMode,
         home: Scaffold(
           bottomNavigationBar: BottomNavBar(

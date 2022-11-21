@@ -5,6 +5,7 @@ class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
       primaryColor: Colors.black,
       brightness: Brightness.dark,
+      fontFamily: 'Raleway',
       scaffoldBackgroundColor: Color.fromARGB(255, 15, 15, 15),
       dividerColor: Colors.black12,
       textTheme: TextTheme(bodyText2: TextStyle(color: Colors.grey.shade100)));
@@ -12,6 +13,7 @@ class ThemeNotifier with ChangeNotifier {
   final lightTheme = ThemeData(
     // primarySwatch: Colors.grey,
     primaryColor: Colors.white,
+    fontFamily: 'Raleway',
     brightness: Brightness.light,
     backgroundColor: const Color(0xFFE5E5E5),
     dividerColor: Colors.white54,
