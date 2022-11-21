@@ -17,11 +17,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Subject>> _subjects;
 
+  /// Only show these since the other ones are irrelevant lol
+  final List<int> _visibleSubjects = [3, 4, 7, 12, 13];
+
   Future<List<Subject>> _fetchSubjects() async {
     final response = await http.get(Uri.parse("${API_URL}/subjects"));
     List<Subject> subjects = (jsonDecode(response.body)["content"] as List)
         .map(((s) => Subject.fromJson(s)))
         .toList();
+
+    subjects.retainWhere(
+        (subject) => _visibleSubjects.contains(subject.id.toInt()));
 
     return subjects;
   }
@@ -66,7 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           } else if (snapshot.hasError) {
                             return Text("error: ${snapshot.error}");
                           } else {
-                            return CircularProgressIndicator();
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ));
                           }
                         },
                       )),
@@ -141,7 +150,7 @@ class SubjectList extends StatelessWidget {
     "18": "🌐", // politics
     "19": "🇪🇸" // spanish
   };
-  final List<Subject> subjects;
+  List<Subject> subjects;
 
   @override
   Widget build(BuildContext context) {
